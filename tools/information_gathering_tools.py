@@ -3,10 +3,20 @@ import os
 import socket
 import subprocess
 import webbrowser
+import sys
 
 from core import HackingTool
 from core import HackingToolsCollection
 from core import clear_screen
+
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+from rich.prompt import Prompt
+from rich.table import Table
+
+console = Console()
+PURPLE_STYLE = "bold magenta"
 
 
 class NMAP(HackingTool):
@@ -19,7 +29,7 @@ class NMAP(HackingTool):
     PROJECT_URL = "https://github.com/nmap/nmap"
 
     def __init__(self):
-        super(NMAP, self).__init__(runnable = False)
+        super(NMAP, self).__init__(runnable=False)
 
 
 class Dracnmap(HackingTool):
@@ -33,19 +43,17 @@ class Dracnmap(HackingTool):
     RUN_COMMANDS = ["cd Dracnmap;sudo ./dracnmap-v2.2.sh"]
     PROJECT_URL = "https://github.com/Screetsec/Dracnmap"
 
-#    def __init__(self):
-#        super(Dracnmap, self).__init__(runnable = False)
-
 
 class PortScan(HackingTool):
     TITLE = "Port scanning"
 
     def __init__(self):
-        super(PortScan, self).__init__(installable = False)
+        super(PortScan, self).__init__(installable=False)
 
     def run(self):
         clear_screen()
-        target = input('Select a Target IP: ')
+        console.print(Panel(Text(self.TITLE, justify="center"), style=PURPLE_STYLE))
+        target = Prompt.ask("[bold]Select a Target IP[/]", default="", show_default=False)
         subprocess.run(["sudo", "nmap", "-O", "-Pn", target])
 
 
@@ -53,13 +61,14 @@ class Host2IP(HackingTool):
     TITLE = "Host to IP "
 
     def __init__(self):
-        super(Host2IP, self).__init__(installable = False)
+        super(Host2IP, self).__init__(installable=False)
 
     def run(self):
         clear_screen()
-        host = input("Enter host name (e.g. www.google.com):-  ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=PURPLE_STYLE))
+        host = Prompt.ask("Enter host name (e.g. www.google.com):-  ")
         ips = socket.gethostbyname(host)
-        print(ips)
+        console.print(f"[{PURPLE_STYLE}]{host} -> {ips}[/]")
 
 
 class XeroSploit(HackingTool):
@@ -96,9 +105,6 @@ class ReconSpider(HackingTool):
     RUN_COMMANDS = ["cd reconspider;python3 reconspider.py"]
     PROJECT_URL = "https://github.com/bhavsec/reconspider"
 
-#    def __init__(self):
-#        super(ReconSpider, self).__init__(runnable = False)
-
 
 class IsItDown(HackingTool):
     TITLE = "IsItDown (Check Website Down/Up)"
@@ -106,9 +112,10 @@ class IsItDown(HackingTool):
 
     def __init__(self):
         super(IsItDown, self).__init__(
-            [('Open', self.open)], installable = False, runnable = False)
+            [('Open', self.open)], installable=False, runnable=False)
 
     def open(self):
+        console.print(Panel("Opening isitdownrightnow.com", style=PURPLE_STYLE))
         webbrowser.open_new_tab("https://www.isitdownrightnow.com/")
 
 
@@ -142,7 +149,8 @@ class Striker(HackingTool):
     PROJECT_URL = "https://github.com/s0md3v/Striker"
 
     def run(self):
-        site = input("Enter Site Name (example.com) >> ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=PURPLE_STYLE))
+        site = Prompt.ask("Enter Site Name (example.com) >> ")
         os.chdir("Striker")
         subprocess.run(["sudo", "python3", "striker.py", site])
 
@@ -160,7 +168,7 @@ class SecretFinder(HackingTool):
     PROJECT_URL = "https://github.com/m4ll0k/SecretFinder"
 
     def __init__(self):
-        super(SecretFinder, self).__init__(runnable = False)
+        super(SecretFinder, self).__init__(runnable=False)
 
 
 class Shodan(HackingTool):
@@ -172,7 +180,7 @@ class Shodan(HackingTool):
     PROJECT_URL = "https://github.com/m4ll0k/Shodanfy.py"
 
     def __init__(self):
-        super(Shodan, self).__init__(runnable = False)
+        super(Shodan, self).__init__(runnable=False)
 
 
 class PortScannerRanger(HackingTool):
@@ -185,7 +193,8 @@ class PortScannerRanger(HackingTool):
     PROJECT_URL = "https://github.com/floriankunushevci/rang3r"
 
     def run(self):
-        ip = input("Enter Ip >> ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=PURPLE_STYLE))
+        ip = Prompt.ask("Enter Ip >> ")
         os.chdir("rang3r")
         subprocess.run(["sudo", "python", "rang3r.py", "--ip", ip])
 
@@ -195,11 +204,13 @@ class Breacher(HackingTool):
     DESCRIPTION = "An advanced multithreaded admin panel finder written in python."
     INSTALL_COMMANDS = ["git clone https://github.com/s0md3v/Breacher.git"]
     PROJECT_URL = "https://github.com/s0md3v/Breacher"
-    
+
     def run(self):
-        domain = input("Enter domain (example.com) >> ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=PURPLE_STYLE))
+        domain = Prompt.ask("Enter domain (example.com) >> ")
         os.chdir("Breacher")
         subprocess.run(["python3", "breacher.py", "-u", domain])
+
 
 class InformationGatheringTools(HackingToolsCollection):
     TITLE = "Information gathering tools"
@@ -220,3 +231,72 @@ class InformationGatheringTools(HackingToolsCollection):
         PortScannerRanger(),
         Breacher()
     ]
+
+    def _get_attr(self, obj, *names, default=""):
+        for n in names:
+            if hasattr(obj, n):
+                return getattr(obj, n)
+        return default
+
+    def pretty_print(self):
+        table = Table(title="Information Gathering Tools", show_lines=True, expand=True)
+        table.add_column("Title", style=PURPLE_STYLE, no_wrap=True)
+        table.add_column("Description", style=PURPLE_STYLE)
+        table.add_column("Project URL", style=PURPLE_STYLE, no_wrap=True)
+
+        for t in self.TOOLS:
+            title = self._get_attr(t, "TITLE", "Title", "title", default=t.__class__.__name__)
+            desc = self._get_attr(t, "DESCRIPTION", "Description", "description", default="")
+            url = self._get_attr(t, "PROJECT_URL", "PROJECT_URL", "PROJECT", "project_url", "projectUrl", default="")
+            table.add_row(str(title), str(desc).replace("\n", " "), str(url))
+
+        console.print(Panel(table, title=f"[magenta]Available Tools[/magenta]", border_style=PURPLE_STYLE))
+
+    def show_options(self, parent=None):
+        console.print("\n")
+        console.print(Panel.fit(
+            "[bold magenta]Information Gathering Collection[/bold magenta]\n"
+            "Select a tool to view/run it or return to the previous menu.",
+            border_style=PURPLE_STYLE
+        ))
+
+        table = Table(title="[bold cyan]Available Tools[/bold cyan]", show_lines=True, expand=True)
+        table.add_column("Index", justify="center", style="bold yellow")
+        table.add_column("Tool Name", justify="left", style="bold green")
+        table.add_column("Description", justify="left", style="white")
+
+        for i, tool in enumerate(self.TOOLS):
+            title = self._get_attr(tool, "TITLE", "Title", "title", default=tool.__class__.__name__)
+            desc = self._get_attr(tool, "DESCRIPTION", "Description", "description", default="—")
+            table.add_row(str(i + 1), title, desc or "—")
+
+        table.add_row("[red]99[/red]", "[bold red]Exit[/bold red]", "Return to previous menu")
+        console.print(table)
+
+        try:
+            choice = Prompt.ask("[bold cyan]Select a tool to run[/bold cyan]", default="99")
+            choice = int(choice)
+            if 1 <= choice <= len(self.TOOLS):
+                selected = self.TOOLS[choice - 1]
+                # delegate to collection-style tools if available
+                if hasattr(selected, "show_options"):
+                    selected.show_options(parent=self)
+                # if tool exposes actions/menu, try to call it
+                elif hasattr(selected, "show_actions"):
+                    selected.show_actions(parent=self)
+                # otherwise try to call run if present
+                elif hasattr(selected, "run"):
+                    selected.run()
+                else:
+                    console.print("[bold yellow]Selected tool has no runnable interface.[/bold yellow]")
+            elif choice == 99:
+                return 99
+        except Exception:
+            console.print("[bold red]Invalid choice. Try again.[/bold red]")
+        return self.show_options(parent=parent)
+
+
+if __name__ == "__main__":
+    tools = InformationGatheringTools()
+    tools.pretty_print()
+    tools.show_options()

@@ -4,6 +4,16 @@ import os
 from core import HackingTool
 from core import HackingToolsCollection
 
+from rich.console import Console
+from rich.theme import Theme
+from rich.table import Table
+from rich.panel import Panel
+from rich.prompt import Prompt
+
+_theme = Theme({"purple": "#7B61FF"})
+console = Console(theme=_theme)
+
+
 class autophisher(HackingTool):
     TITLE = "Autophisher RK"
     DESCRIPTION = "Automated Phishing Toolkit"
@@ -13,7 +23,8 @@ class autophisher(HackingTool):
     ]
     RUN_COMMANDS = ["cd autophisher;sudo bash autophisher.sh"]
     PROJECT_URL = "https://github.com/CodingRanjith/autophisher"
-    
+
+
 class Pyphisher(HackingTool):
     TITLE = "Pyphisher"
     DESCRIPTION = "Easy to use phishing tool with 77 website templates"
@@ -23,8 +34,9 @@ class Pyphisher(HackingTool):
         "pip3 install -r requirements.txt"
     ]
     RUN_COMMANDS = ["cd PyPhisher;sudo python3 pyphisher.py"]
-    PROJECT_URL = "git clone https://github.com/KasRoudra/PyPhisher"    
-    
+    PROJECT_URL = "git clone https://github.com/KasRoudra/PyPhisher"
+
+
 class AdvPhishing(HackingTool):
     TITLE = "AdvPhishing"
     DESCRIPTION = "This is Advance Phishing Tool ! OTP PHISHING"
@@ -32,7 +44,8 @@ class AdvPhishing(HackingTool):
         "sudo git clone https://github.com/Ignitetch/AdvPhishing.git",
         "cd AdvPhishing;chmod 777 *;bash Linux-Setup.sh"]
     RUN_COMMANDS = ["cd AdvPhishing && sudo bash AdvPhishing.sh"]
-    PROJECT_URL = "https://github.com/Ignitetch/AdvPhishing"      
+    PROJECT_URL = "https://github.com/Ignitetch/AdvPhishing"
+
 
 class Setoolkit(HackingTool):
     TITLE = "Setoolkit"
@@ -118,7 +131,8 @@ class QRJacking(HackingTool):
         "sudo git clone https://github.com/cryptedwolf/ohmyqr.git && sudo apt -y install scrot"]
     RUN_COMMANDS = ["cd ohmyqr && sudo bash ohmyqr.sh"]
     PROJECT_URL = "https://github.com/cryptedwolf/ohmyqr"
-    
+
+
 class WifiPhisher(HackingTool):
     TITLE = "WifiPhisher"
     DESCRIPTION = "The Rogue Access Point Framework"
@@ -126,8 +140,9 @@ class WifiPhisher(HackingTool):
         "sudo git clone https://github.com/wifiphisher/wifiphisher.git",
         "cd wifiphisher"]
     RUN_COMMANDS = ["cd wifiphisher && sudo python setup.py"]
-    PROJECT_URL = "https://github.com/wifiphisher/wifiphisher"   
-    
+    PROJECT_URL = "https://github.com/wifiphisher/wifiphisher"
+
+
 class BlackEye(HackingTool):
     TITLE = "BlackEye"
     DESCRIPTION = "The ultimate phishing tool with 38 websites available!"
@@ -135,7 +150,8 @@ class BlackEye(HackingTool):
         "sudo git clone https://github.com/thelinuxchoice/blackeye",
         "cd blackeye "]
     RUN_COMMANDS = ["cd blackeye && sudo bash blackeye.sh"]
-    PROJECT_URL = "https://github.com/An0nUD4Y/blackeye"      
+    PROJECT_URL = "https://github.com/An0nUD4Y/blackeye"
+
 
 class ShellPhish(HackingTool):
     TITLE = "ShellPhish"
@@ -143,7 +159,8 @@ class ShellPhish(HackingTool):
     INSTALL_COMMANDS = ["git clone https://github.com/An0nUD4Y/shellphish.git"]
     RUN_COMMANDS = ["cd shellphish;sudo bash shellphish.sh"]
     PROJECT_URL = "https://github.com/An0nUD4Y/shellphish"
-    
+
+
 class Thanos(HackingTool):
     TITLE = "Thanos"
     DESCRIPTION = "Browser to Browser Phishingtoolkit"
@@ -152,8 +169,9 @@ class Thanos(HackingTool):
         "cd Thanos && sudo chmod -R 777 Thanos.sh"
     ]
     RUN_COMMANDS = ["cd Thanos;sudo bash Thanos.sh"]
-    PROJECT_URL = "https://github.com/TridevReddy/Thanos"    
-    
+    PROJECT_URL = "https://github.com/TridevReddy/Thanos"
+
+
 class QRLJacking(HackingTool):
     TITLE = "QRLJacking"
     DESCRIPTION = "QRLJacking"
@@ -169,7 +187,8 @@ class QRLJacking(HackingTool):
     ]
     RUN_COMMANDS = ["cd QRLJacking/QRLJacker;python3 QrlJacker.py"]
     PROJECT_URL = "https://github.com/OWASP/QRLJacking"
-    
+
+
 class Maskphish(HackingTool):
     TITLE = "Miskphish"
     DESCRIPTION = "Hide phishing URL under a normal looking URL (google.com or facebook.com)"
@@ -177,7 +196,7 @@ class Maskphish(HackingTool):
         "sudo git clone https://github.com/jaykali/maskphish.git",
         "cd maskphish"]
     RUN_COMMANDS = ["cd maskphish;sudo bash maskphish.sh"]
-    PROJECT_URL = "https://github.com/jaykali/maskphish"            
+    PROJECT_URL = "https://github.com/jaykali/maskphish"
 
 
 class BlackPhish(HackingTool):
@@ -195,11 +214,12 @@ class BlackPhish(HackingTool):
     def update(self):
         os.system("cd BlackPhish;sudo bash update.sh")
 
+
 class dnstwist(HackingTool):
-    Title='dnstwist'
-    Install_commands=['sudo git clone https://github.com/elceef/dnstwist.git','cd dnstwist']
-    Run_commands=['cd dnstwist;sudo python3 dnstwist.py']
-    project_url='https://github.com/elceef/dnstwist'
+    Title = 'dnstwist'
+    Install_commands = ['sudo git clone https://github.com/elceef/dnstwist.git','cd dnstwist']
+    Run_commands = ['cd dnstwist;sudo python3 dnstwist.py']
+    project_url = 'https://github.com/elceef/dnstwist'
 
 
 class PhishingAttackTools(HackingToolsCollection):
@@ -223,3 +243,77 @@ class PhishingAttackTools(HackingToolsCollection):
         Maskphish(),
         dnstwist()
     ]
+
+    def _get_attr_fallback(self, item, *names, default=""):
+        for n in names:
+            if hasattr(item, n):
+                return getattr(item, n)
+        return default
+
+    def pretty_print(self):
+        table = Table(title="Phishing Attack Tools", show_lines=True, expand=True)
+        table.add_column("Title", style="purple", no_wrap=True)
+        table.add_column("Description", style="purple")
+        table.add_column("Project URL", style="purple", no_wrap=True)
+
+        for t in self.TOOLS:
+            # try typical attribute names, then fall back to common variations
+            title = (
+                self._get_attr_fallback(t, "TITLE", "Title", "title")
+                or t.__class__.__name__
+            )
+            desc = self._get_attr_fallback(t, "DESCRIPTION", "Description", "description", "INSTALL_COMMANDS", default="") or ""
+            # prefer PROJECT_URL but also accept project_url or project_url-like fields
+            url = self._get_attr_fallback(t, "PROJECT_URL", "PROJECT_URL", "PROJECT", "project_url", "projectUrl", default="") or ""
+            table.add_row(str(title), str(desc).strip().replace("\n", " "), str(url))
+
+        panel = Panel(table, title="[purple]Available Tools[/purple]", border_style="purple")
+        console.print(panel)
+
+    def show_options(self, parent=None):
+        console.print("\n")
+        panel = Panel.fit("[bold magenta]Phishing Attack Tools Collection[/bold magenta]\n"
+                          "Select a tool to view options or run it.",
+                          border_style="purple")
+        console.print(panel)
+
+        table = Table(title="[bold cyan]Available Tools[/bold cyan]", show_lines=True, expand=True)
+        table.add_column("Index", justify="center", style="bold yellow")
+        table.add_column("Tool Name", justify="left", style="bold green")
+        table.add_column("Description", justify="left", style="white")
+
+        for i, tool in enumerate(self.TOOLS):
+            title = self._get_attr_fallback(tool, "TITLE", "Title", "title", default=tool.__class__.__name__)
+            desc = self._get_attr_fallback(tool, "DESCRIPTION", "Description", "description", default="—")
+            table.add_row(str(i + 1), title, desc or "—")
+
+        table.add_row("[red]99[/red]", "[bold red]Exit[/bold red]", "Return to previous menu")
+        console.print(table)
+
+        try:
+            choice = Prompt.ask("[bold cyan]Select a tool to run[/bold cyan]", default="99")
+            choice = int(choice)
+            if 1 <= choice <= len(self.TOOLS):
+                selected = self.TOOLS[choice - 1]
+                # If tool exposes show_options (collection-style), delegate to it
+                if hasattr(selected, "show_options"):
+                    selected.show_options(parent=self)
+                # Otherwise, if runnable, call its run method
+                elif hasattr(selected, "run"):
+                    selected.run()
+                # Preserve any before_run hooks if present
+                elif hasattr(selected, "before_run"):
+                    selected.before_run()
+                else:
+                    console.print("[bold yellow]Selected tool has no runnable interface.[/bold yellow]")
+            elif choice == 99:
+                return 99
+        except Exception:
+            console.print("[bold red]Invalid choice. Try again.[/bold red]")
+        return self.show_options(parent=parent)
+
+
+if __name__ == "__main__":
+    tools = PhishingAttackTools()
+    tools.pretty_print()
+    tools.show_options()

@@ -2,8 +2,17 @@
 import os
 import subprocess
 
+from rich.console import Console
+from rich.prompt import Prompt
+from rich.panel import Panel
+from rich.text import Text
+from rich.table import Table
+
 from core import HackingTool
 from core import HackingToolsCollection
+
+console = Console()
+P_COLOR = "magenta"  # primary purple/magenta theme for styling
 
 
 class ddos(HackingTool):
@@ -21,12 +30,13 @@ class ddos(HackingTool):
     PROJECT_URL = "https://github.com/the-deepnet/ddos.git"
 
     def run(self):
-        method = input("Enter Method >> ")
-        url = input("Enter URL >> ")
-        threads = input("Enter Threads >> ")
-        proxylist = input(" Enter ProxyList >> ")
-        multiple = input(" Enter Multiple >> ")
-        timer = input(" Enter Timer >> ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=f"bold {P_COLOR}"))
+        method = Prompt.ask("Enter Method >>")
+        url = Prompt.ask("Enter URL >>")
+        threads = Prompt.ask("Enter Threads >>")
+        proxylist = Prompt.ask("Enter ProxyList >>")
+        multiple = Prompt.ask("Enter Multiple >>")
+        timer = Prompt.ask("Enter Timer >>")
         os.system("cd ddos;")
         subprocess.run(
             [
@@ -52,7 +62,8 @@ class SlowLoris(HackingTool):
     INSTALL_COMMANDS = ["sudo pip3 install slowloris"]
 
     def run(self):
-        target_site = input("Enter Target Site:- ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=f"bold {P_COLOR}"))
+        target_site = Prompt.ask("Enter Target Site:-")
         subprocess.run(["slowloris", target_site])
 
 
@@ -70,9 +81,10 @@ class Asyncrone(HackingTool):
     PROJECT_URL = "https://github.com/fatihsnsy/aSYNcrone"
 
     def run(self):
-        source_port = input("Enter Source Port >> ")
-        target_ip = input("Enter Target IP >> ")
-        target_port = input("Enter Target port >> ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=f"bold {P_COLOR}"))
+        source_port = Prompt.ask("Enter Source Port >>")
+        target_ip = Prompt.ask("Enter Target IP >>")
+        target_port = Prompt.ask("Enter Target port >>")
         os.system("cd aSYNcrone;")
         subprocess.run(
             ["sudo", "./aSYNcrone", source_port, target_ip, target_port, 1000]
@@ -108,8 +120,9 @@ class GoldenEye(HackingTool):
     PROJECT_URL = "https://github.com/jseidl/GoldenEye"
 
     def run(self):
+        console.print(Panel(Text(self.TITLE, justify="center"), style=f"bold {P_COLOR}"))
         os.system("cd GoldenEye ;sudo ./goldeneye.py")
-        print("\033[96m Go to Directory \n [*] USAGE: ./goldeneye.py <url> [OPTIONS]")
+        console.print("Go to Directory\n[*] USAGE: ./goldeneye.py <url> [OPTIONS]")
 
 
 class Saphyra(HackingTool):
@@ -125,13 +138,81 @@ class Saphyra(HackingTool):
     PROJECT_URL = "https://github.com/anonymous24x7/Saphyra-DDoS"
 
     def run(self):
-        url = input("Enter url>>> ")
+        console.print(Panel(Text(self.TITLE, justify="center"), style=f"bold {P_COLOR}"))
+        url = Prompt.ask("Enter url>>>")
         try:
             os.system("python saphyra.py " + url)
         except Exception:
-            print("Enter a valid url.")
+            console.print("Enter a valid url.", style="bold red")
 
 
 class DDOSTools(HackingToolsCollection):
     TITLE = "DDOS Attack Tools"
     TOOLS = [SlowLoris(), Asyncrone(), UFONet(), GoldenEye(), Saphyra()]
+
+    def _get_attr(self, obj, *names, default=""):
+        for n in names:
+            if hasattr(obj, n):
+                return getattr(obj, n)
+        return default
+
+    def pretty_print(self):
+        table = Table(title="DDOS Attack Tools", show_lines=True, expand=True)
+        table.add_column("Title", style="magenta", no_wrap=True)
+        table.add_column("Description", style="magenta")
+        table.add_column("Project URL", style="magenta", no_wrap=True)
+
+        for t in self.TOOLS:
+            title = self._get_attr(t, "TITLE", "Title", "title", default=t.__class__.__name__)
+            desc = self._get_attr(t, "DESCRIPTION", "Description", "description", default="")
+            url = self._get_attr(t, "PROJECT_URL", "PROJECT_URL", "PROJECT", "project_url", "projectUrl", default="")
+            table.add_row(str(title), str(desc).strip().replace("\n", " "), str(url))
+
+        panel = Panel(table, title=f"[{P_COLOR}]Available Tools[/ {P_COLOR}]", border_style=P_COLOR)
+        console.print(panel)
+
+    def show_options(self, parent=None):
+        console.print("\n")
+        console.print(Panel.fit(
+            "[bold magenta]DDOS Attack Tools Collection[/bold magenta]\n"
+            "Select a tool to view options or run it.",
+            border_style=P_COLOR
+        ))
+
+        table = Table(title="[bold cyan]Available Tools[/bold cyan]", show_lines=True, expand=True)
+        table.add_column("Index", justify="center", style="bold yellow")
+        table.add_column("Tool Name", justify="left", style="bold green")
+        table.add_column("Description", justify="left", style="white")
+
+        for i, tool in enumerate(self.TOOLS):
+            title = self._get_attr(tool, "TITLE", "Title", "title", default=tool.__class__.__name__)
+            desc = self._get_attr(tool, "DESCRIPTION", "Description", "description", default="—")
+            table.add_row(str(i + 1), title, desc or "—")
+
+        table.add_row("[red]99[/red]", "[bold red]Exit[/bold red]", "Return to previous menu")
+        console.print(table)
+
+        try:
+            choice = Prompt.ask("[bold cyan]Select a tool to run[/bold cyan]", default="99")
+            choice = int(choice)
+            if 1 <= choice <= len(self.TOOLS):
+                selected = self.TOOLS[choice - 1]
+                # If tool exposes show_options (collection-style), delegate to it
+                if hasattr(selected, "show_options"):
+                    selected.show_options(parent=self)
+                # Otherwise, if runnable, call its run method
+                elif hasattr(selected, "run"):
+                    selected.run()
+                else:
+                    console.print("[bold yellow]Selected tool has no runnable interface.[/bold yellow]")
+            elif choice == 99:
+                return 99
+        except Exception:
+            console.print("[bold red]Invalid choice. Try again.[/bold red]")
+        return self.show_options(parent=parent)
+
+
+if __name__ == "__main__":
+    tools = DDOSTools()
+    tools.pretty_print()
+    tools.show_options()
