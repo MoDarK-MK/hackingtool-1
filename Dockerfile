@@ -1,12 +1,23 @@
 FROM kalilinux/kali-rolling:latest
-RUN apt-get update && \
-    apt-get install -y git python3-pip figlet sudo && \
-    apt-get install -y boxes php curl xdotool wget
-
+ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /root/hackingtool
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      git \
+      python3-pip \
+      python3-venv \
+      figlet \
+      sudo \
+      boxes \
+      php \
+      curl \
+      xdotool \
+      wget && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt ./
-RUN pip3 install --no-cache-dir boxes flask lolcat requests -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 COPY . .
-RUN true && echo "/root/hackingtool/" > /home/hackingtoolpath.txt;
-EXPOSE 1-65535
+RUN mkdir -p /home && echo "/root/hackingtool/" > /home/hackingtoolpath.txt
+EXPOSE 5000
 ENTRYPOINT ["python3", "/root/hackingtool/hackingtool.py"]
