@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# Version 1.1.0 (rich UI - purple theme)
+#!/usr/bin/enhttps://github.com/MoDarK-MK/hackingtool-1 python3
+# Version 1.2.0 (rich UI - purple theme)
 import os
 import sys
 import webbrowser
@@ -105,7 +105,7 @@ class AllTools(HackingToolsCollection):
         footer = Text.assemble(
             (" https://github.com/Z4nzu/hackingtool ", "bold bright_black"),
             (" | ",),
-            ("Version 1.1.0", "bold green"),
+            ("Version 1.2.0", "bold green"),
         )
         warning = Text(" Please Don't Use For illegal Activity ", style="bold red")
         panel = Panel(
