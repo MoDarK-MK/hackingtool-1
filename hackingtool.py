@@ -1,4 +1,4 @@
-#!/usr/bin/enhttps://github.com/MoDarK-MK/hackingtool-1 python3
+#!/usr/bin/env python3
 # Version 1.2.0 (rich UI - purple theme)
 import os
 import sys
@@ -93,7 +93,6 @@ all_tools = [
     ToolManager()
 ]
 
-
 class AllTools(HackingToolsCollection):
     TITLE = "All tools"
     TOOLS = all_tools
@@ -115,7 +114,6 @@ class AllTools(HackingToolsCollection):
             border_style="magenta"
         )
         console.print(panel)
-
 
 def build_menu():
     table = Table.grid(expand=True)
@@ -150,7 +148,6 @@ def build_menu():
     console.print(footer)
     console.print("")
 
-
 def choose_path():
     fpath = os.path.expanduser("~/hackingtoolpath.txt")
     if not os.path.exists(fpath):
@@ -170,7 +167,6 @@ def choose_path():
             console.print(f"[green]Your Default Path Is:[/green] {autopath}")
             sleep(1)
     return fpath
-
 
 def interact_menu():
     while True:
@@ -221,7 +217,6 @@ def main():
     except KeyboardInterrupt:
         console.print("\n[bold red]Exiting ..!!![/bold red]")
         sleep(1)
-
 
 if __name__ == "__main__":
     main()
